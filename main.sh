@@ -1,31 +1,45 @@
 #!/bin/bash
 
-qAliasTag=$(cat <<EOF
+title=$(cat <<EOM
 ######################################################
 #QUICK ALIASES
 ######################################################
-EOF
+EOM
 )
 
+fPath="./test.txt"
+
 function qalias {
-    #Look for alias tag in .zsh
-    if grep -Fxq $qAliasTagvb ~/.zshrc
+    #Look for title tag 
+    if grep -Fxq "$title" "$fPath"
     then
-        __createAlias $1
+        __createAlias "$1"
     else
-        #create alias tag in .zsh
-        sed -i -e $qAlaisTag ~/.zshrc
-        __createAlias $1
+        #create alias tag
+        echo "$title" >> "$fPath"
+        #sed -i "$title" "$fPath"
+        __createAlias "$1"
     fi
 }
 
+
+__createFile(){
+    #File doesnt exist do you want to create
+    echo "test"
+}
+
 __createAlias (){
-            sed  '/\$(qAliasTag)/i' + $1 ~/.zshrc
+
+    sed -i "0,/^\$title.*/a $1" "$fPath"
+    #sed  "0,/\[$title\]\/a $1" "$fPath"
 
 }
 
-alias qa = qalias
+alias qa="qalias"
 # alias rmqa =
+
+
+
 
 
 #TODO
